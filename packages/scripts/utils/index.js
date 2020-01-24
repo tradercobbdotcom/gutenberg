@@ -20,9 +20,20 @@ const {
 	downloadWordPressZip,
 	mergeYAMLConfigs,
 } = require( './env' );
-const { fromProjectRoot, fromConfigRoot, hasProjectFile } = require( './file' );
-const { hasPackageProp } = require( './package' );
-const { camelCaseDash } = require( './string' );
+const {
+	fromProjectRoot,
+	fromConfigRoot,
+	hasProjectFile,
+} = require( './file' );
+const {
+	hasPackageProp,
+} = require( './package' );
+const {
+	camelCaseDash,
+} = require( './string' );
+const {
+	makeChangeLog,
+} = require( './changelog/make-change-log' );
 
 module.exports = {
 	buildWordPress,
@@ -43,4 +54,5 @@ module.exports = {
 	downloadWordPressZip,
 	mergeYAMLConfigs,
 	spawnScript,
+	makeChangeLog,
 };
