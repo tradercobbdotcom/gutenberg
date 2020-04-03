@@ -7,6 +7,7 @@ const getAssociatedPullRequest = require( './get-associated-pull-request' );
 /** @typedef {import('@octokit/rest').HookError} HookError */
 /** @typedef {import('@actions/github').GitHub} GitHub */
 /** @typedef {import('@octokit/webhooks').WebhookPayloadPush} WebhookPayloadPush */
+/** @typedef {import('@octokit/rest').IssuesListMilestonesForRepoResponseItem} OktokitIssuesListMilestonesForRepoResponseItem */
 
 /**
  * Number of expected days elapsed between releases.
@@ -40,7 +41,7 @@ const isDuplicateValidationError = ( error ) =>
  * @param {string} repo    Repository name.
  * @param {string} title   Milestone title.
  *
- * @return {Promise<import('@octokit/rest').IssuesListMilestonesForRepoResponseItem|void>}
+ * @return {Promise<OktokitIssuesListMilestonesForRepoResponseItem|void>} Promise resolving to milestone, if exists.
  */
 async function getMilestoneByTitle( octokit, owner, repo, title ) {
 	const options = octokit.issues.listMilestonesForRepo.endpoint.merge( {
