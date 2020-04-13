@@ -33,7 +33,6 @@
 		"wp-scripts": "./bin/wp-scripts.js"
 	},
 	"dependencies": {
-		"@octokit/graphql": "4.3.1",
 		"@svgr/webpack": "^5.2.0",
 		"@wordpress/babel-preset-default": "file:../babel-preset-default",
 		"@wordpress/dependency-extraction-webpack-plugin": "file:../dependency-extraction-webpack-plugin",
