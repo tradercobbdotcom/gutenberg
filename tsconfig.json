@@ -5,6 +5,7 @@
 		{ "path": "packages/autop" },
 		{ "path": "packages/blob" },
 		{ "path": "packages/block-editor" },
+		{ "path": "packages/compose" },
 		{ "path": "packages/dom-ready" },
 		{ "path": "packages/element" },
 		{ "path": "packages/escape-html" },
