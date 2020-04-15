@@ -55,6 +55,7 @@ function Layout() {
 		closePublishSidebar,
 		openGeneralSidebar,
 		togglePublishSidebar,
+		closeEntitiesSavedStates,
 	} = useDispatch( 'core/edit-post' );
 	const {
 		mode,
@@ -69,6 +70,7 @@ function Layout() {
 		previousShortcut,
 		nextShortcut,
 		hasBlockSelected,
+		isEntitiesSavedStatesOpen,
 	} = useSelect( ( select ) => {
 		return {
 			hasFixedToolbar: select( 'core/edit-post' ).isFeatureActive(
@@ -99,6 +101,9 @@ function Layout() {
 			nextShortcut: select(
 				'core/keyboard-shortcuts'
 			).getAllShortcutRawKeyCombinations( 'core/edit-post/next-region' ),
+			isEntitiesSavedStatesOpen: select(
+				'core/edit-post'
+			).isEntitiesSavedStatesOpen(),
 		};
 	}, [] );
 	const sidebarIsOpened =
@@ -179,7 +184,10 @@ function Layout() {
 					}
 					actions={
 						<>
-							<EntitiesSavedStates />
+							<EntitiesSavedStates
+								isOpen={ isEntitiesSavedStatesOpen }
+								closePanel={ closeEntitiesSavedStates }
+							/>
 							{ publishSidebarOpened ? (
 								<PostPublishPanel
 									onClose={ closePublishSidebar }
