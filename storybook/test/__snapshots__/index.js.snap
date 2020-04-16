@@ -441,6 +441,7 @@ exports[`Storyshots Components/AlignmentMatrixControl Icon 1`] = `
 
 <div
   className="component-alignment-matrix-control-icon emotion-36 emotion-37"
+  height={24}
   role="presentation"
   size={24}
   style={
@@ -448,6 +449,7 @@ exports[`Storyshots Components/AlignmentMatrixControl Icon 1`] = `
       "transform": "scale(1.00)",
     }
   }
+  width={24}
 >
   <span
     className="emotion-2 emotion-3"
