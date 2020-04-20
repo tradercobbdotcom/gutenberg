@@ -118,6 +118,42 @@ function Layout() {
 			hasBlockSelected ? 'edit-post/block' : 'edit-post/document'
 		);
 
+	const Actions = () => {
+		if ( isEntitiesSavedStatesOpen ) {
+			return (
+				<EntitiesSavedStates
+					isOpen={ isEntitiesSavedStatesOpen }
+					closePanel={ closeEntitiesSavedStates }
+				/>
+			);
+		}
+
+		if ( publishSidebarOpened ) {
+			return (
+				<PostPublishPanel
+					onClose={ closePublishSidebar }
+					forceIsDirty={ hasActiveMetaboxes }
+					forceIsSaving={ isSaving }
+					PrePublishExtension={ PluginPrePublishPanel.Slot }
+					PostPublishExtension={ PluginPostPublishPanel.Slot }
+				/>
+			);
+		}
+
+		return (
+			<div className="edit-post-layout__toggle-publish-panel">
+				<Button
+					isSecondary
+					className="edit-post-layout__toggle-publish-panel-button"
+					onClick={ togglePublishSidebar }
+					aria-expanded={ false }
+				>
+					{ __( 'Open publish panel' ) }
+				</Button>
+			</div>
+		);
+	};
+
 	return (
 		<>
 			<FullscreenMode isActive={ isFullscreenActive } />
@@ -182,38 +218,7 @@ function Layout() {
 							</div>
 						)
 					}
-					actions={
-						<>
-							<EntitiesSavedStates
-								isOpen={ isEntitiesSavedStatesOpen }
-								closePanel={ closeEntitiesSavedStates }
-							/>
-							{ publishSidebarOpened ? (
-								<PostPublishPanel
-									onClose={ closePublishSidebar }
-									forceIsDirty={ hasActiveMetaboxes }
-									forceIsSaving={ isSaving }
-									PrePublishExtension={
-										PluginPrePublishPanel.Slot
-									}
-									PostPublishExtension={
-										PluginPostPublishPanel.Slot
-									}
-								/>
-							) : (
-								<div className="edit-post-layout__toggle-publish-panel">
-									<Button
-										isSecondary
-										className="edit-post-layout__toggle-publish-panel-button"
-										onClick={ togglePublishSidebar }
-										aria-expanded={ false }
-									>
-										{ __( 'Open publish panel' ) }
-									</Button>
-								</div>
-							) }
-						</>
-					}
+					actions={ <Actions /> }
 					shortcuts={ {
 						previous: previousShortcut,
 						next: nextShortcut,
