@@ -123,6 +123,9 @@ export function isBlockValid( state, clientId ) {
  * @return {Object?} Block attributes.
  */
 export function getBlockAttributes( state, clientId ) {
+	if ( ! state.blocks ) {
+		return null;
+	}
 	const block = state.blocks.byClientId[ clientId ];
 	if ( ! block ) {
 		return null;
@@ -137,32 +140,52 @@ export function getBlockAttributes( state, clientId ) {
  * is not the block's registration settings, which must be retrieved from the
  * blocks module registration store.
  *
- * @param {Object} state    Editor state.
- * @param {string} clientId Block client ID.
- *
+ * @param {Object}  state    Editor state.
+ * @param {string}  clientId Block client ID.
+ * @param {boolean} [withImmediateChildren] Use this parameter to ignore whether
+ *                                          inner blocks are controlled. Helpful
+ *                                          for the inner block component, which
+ *                                          needs to see its children, even though
+ *                                          they are controlled.
  * @return {Object} Parsed block object.
  */
 export const getBlock = createSelector(
-	( state, clientId ) => {
+	( state, clientId, withImmediateChildren = false ) => {
 		const block = state.blocks.byClientId[ clientId ];
 		if ( ! block ) {
 			return null;
 		}
 
+		const innerBlocks =
+			! withImmediateChildren &&
+			areInnerBlocksControlled( state, clientId )
+				? EMPTY_ARRAY
+				: getBlocks( state, clientId );
 		return {
 			...block,
+			innerBlocks,
 			attributes: getBlockAttributes( state, clientId ),
-			innerBlocks: getBlocks( state, clientId ),
 		};
 	},
-	( state, clientId ) => [
+	( state, clientId, withImmediateChildren = false ) => {
+		// From the perspective of most entities, we do not want to refresh the
+		// selector when a different entity's inner blocks change. So in the case
+		// of controlled inner blocks, only use block attributes. If withImmediateChildren
+		// is set, then we do care about changes to child blocks
+		if (
+			areInnerBlocksControlled( state, clientId ) &&
+			! withImmediateChildren
+		) {
+			return [ getBlockAttributes( state, clientId ) ];
+		}
+
 		// Normally, we'd have both `getBlockAttributes` dependencies and
 		// `getBlocks` (children) dependancies here but for performance reasons
 		// we use a denormalized cache key computed in the reducer that takes both
 		// the attributes and inner blocks into account. The value of the cache key
 		// is being changed whenever one of these dependencies is out of date.
-		state.blocks.cache[ clientId ],
-	]
+		return [ state.blocks.cache[ clientId ] ];
+	}
 );
 
 export const __unstableGetBlockWithoutInnerBlocks = createSelector(

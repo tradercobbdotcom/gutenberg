@@ -73,6 +73,7 @@ _Parameters_
 
 -   _state_ `Object`: Editor state.
 -   _clientId_ `string`: Block client ID.
+-   _withImmediateChildren_ `[boolean]`: Use this parameter to ignore whether inner blocks are controlled. Helpful for the inner block component, which needs to see its children, even though they are controlled.
 
 _Returns_
 
