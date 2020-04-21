@@ -31,6 +31,7 @@ import {
 	FullscreenMode,
 	InterfaceSkeleton,
 } from '@wordpress/interface';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -56,6 +57,7 @@ function Layout() {
 		openGeneralSidebar,
 		togglePublishSidebar,
 		closeEntitiesSavedStates,
+		openEntitiesSavedStates,
 	} = useDispatch( 'core/edit-post' );
 	const {
 		mode,
@@ -71,6 +73,7 @@ function Layout() {
 		nextShortcut,
 		hasBlockSelected,
 		isEntitiesSavedStatesOpen,
+		hasNonPostEntityChanges,
 	} = useSelect( ( select ) => {
 		return {
 			hasFixedToolbar: select( 'core/edit-post' ).isFeatureActive(
@@ -104,6 +107,9 @@ function Layout() {
 			isEntitiesSavedStatesOpen: select(
 				'core/edit-post'
 			).isEntitiesSavedStatesOpen(),
+			hasNonPostEntityChanges: select(
+				'core/editor'
+			).hasNonPostEntityChanges(),
 		};
 	}, [] );
 	const sidebarIsOpened =
@@ -118,7 +124,12 @@ function Layout() {
 			hasBlockSelected ? 'edit-post/block' : 'edit-post/document'
 		);
 
-	const Actions = () => {
+	const ActionsPanel = () => {
+		const openSavePanel = useCallback(
+			() => openEntitiesSavedStates(),
+			[]
+		);
+
 		if ( isEntitiesSavedStatesOpen ) {
 			return (
 				<EntitiesSavedStates
@@ -137,6 +148,21 @@ function Layout() {
 					PrePublishExtension={ PluginPrePublishPanel.Slot }
 					PostPublishExtension={ PluginPostPublishPanel.Slot }
 				/>
+			);
+		}
+
+		if ( hasNonPostEntityChanges ) {
+			return (
+				<div className="edit-post-layout__toggle-publish-panel">
+					<Button
+						isSecondary
+						className="edit-post-layout__toggle-publish-panel-button"
+						onClick={ openSavePanel }
+						aria-expanded={ false }
+					>
+						{ __( 'Open save panel' ) }
+					</Button>
+				</div>
 			);
 		}
 
@@ -218,7 +244,7 @@ function Layout() {
 							</div>
 						)
 					}
-					actions={ <Actions /> }
+					actions={ <ActionsPanel /> }
 					shortcuts={ {
 						previous: previousShortcut,
 						next: nextShortcut,
