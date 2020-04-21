@@ -133,7 +133,7 @@ function Layout() {
 		if ( isEntitiesSavedStatesOpen ) {
 			return (
 				<EntitiesSavedStates
-					isOpen={ isEntitiesSavedStatesOpen }
+					isOpen={ true }
 					closePanel={ closeEntitiesSavedStates }
 				/>
 			);
