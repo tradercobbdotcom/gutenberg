@@ -1,3 +1,8 @@
+.block-editor-block-list__block {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .block-editor-block-list__layout .block-editor-block-list__block { // Needs specificity to override inherited styles.
 	// While block is being dragged, dim the slot dragged from, and hide some UI.
 	&.is-dragging {
@@ -69,10 +74,10 @@
 			z-index: 1;
 			pointer-events: none;
 			content: "";
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
+			top: $border-width;
+			bottom: $border-width;
+			left: $border-width;
+			right: $border-width;
 
 			// 2px outside.
 			box-shadow: 0 0 0 $border-width-focus $blue-medium-focus;
@@ -132,10 +137,10 @@
 			z-index: 1;
 			pointer-events: none;
 			content: "";
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: 0;
+			top: $border-width;
+			bottom: $border-width;
+			left: $border-width;
+			right: $border-width;
 		}
 
 		.is-block-content, // Floats.
@@ -585,10 +590,7 @@
 		.block-editor-block-list__breadcrumb,
 		.block-editor-block-contextual-toolbar {
 			margin-bottom: $grid-unit-15;
-
-			// @todo It should position the block transform dialog as the left margin of a block. It currently
-			// positions instead, the mover control.
-			margin-left: - $block-toolbar-height - $border-width;
+			margin-left: - $block-toolbar-height;
 		}
 
 		.block-editor-block-contextual-toolbar[data-align="full"],
@@ -611,6 +613,8 @@
 // The purpose of this padding is to ensure that on small viewports, there is
 // room for the block border that sits 14px ($block-padding) offset from the
 // block footprint.
+// These paddings and margins are removed from the BlockPreview component's style
+// Any change need to be reflected there.
 .block-editor-block-list__layout.is-root-container {
 	padding-left: $block-padding;
 	padding-right: $block-padding;
@@ -619,9 +623,7 @@
 		padding-left: $block-side-ui-width;
 		padding-right: $block-side-ui-width;
 	}
-}
 
-.block-editor-block-list__layout.is-root-container {
 	// Full-wide. (to account for the padddings added above)
 	// The first two rules account for the alignment wrapper div for the image block.
 	> div:not(.block-editor-block-list__block) > .block-editor-block-list__block[data-align="full"],
