@@ -69,7 +69,7 @@ export default compose( [
 						canUserUseUnfilteredHTML,
 					} );
 
-					replaceBlocks( selectedBlockClientIds, blocks );
+					replaceBlocks( selectedBlockClientIds, blocks, blocks.length - 1, -1 );
 				}
 			},
 		};
