@@ -121,6 +121,7 @@ class InnerBlocks extends Component {
 			onInput,
 			onChange,
 			__experimentalBlocks,
+			replaceInnerBlocks,
 		} = this.props;
 		const { innerBlocks } = block;
 
@@ -136,12 +137,24 @@ class InnerBlocks extends Component {
 			}
 		}
 
-		if ( onInput || onChange ) {
-			const areBlocksDifferent = ! isShallowEqual(
-				prevProps.block.innerBlocks,
-				innerBlocks
-			);
+		const areBlocksDifferent = ! isShallowEqual(
+			prevProps.block.innerBlocks,
+			innerBlocks
+		);
 
+		// Update the block-editor store with the new controll value if the control
+		// value is changing but the local blocks are staying the same. This should
+		// only really return true if the user "undo"s something in the controller
+		// entity state.
+		if (
+			__experimentalBlocks &&
+			! areBlocksDifferent &&
+			! isEqual( __experimentalBlocks, innerBlocks )
+		) {
+			replaceInnerBlocks( __experimentalBlocks );
+		}
+
+		if ( onInput || onChange ) {
 			// Since we often dispatch an action to mark the previous action as
 			// persistent, we need to make sure that the blocks changed on a
 			// previous action before committing the change. Otherwise, we may
